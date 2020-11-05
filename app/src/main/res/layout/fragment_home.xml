@@ -9,13 +9,34 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <TextView
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:text="@string/upload_image"/>
         <androidx.cardview.widget.CardView
+            android:id="@+id/addImageCard"
+            android:layout_below="@id/head"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="#575756"
+            app:cardBackgroundColor="@color/offBlack"
             app:cardElevation="8dp"
-            app:cardCornerRadius="8dp"/>
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/xrayImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_baseline_add_a_photo_24"/>
+        </androidx.cardview.widget.CardView>
+        <include
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_below="@id/addImageCard"
+            layout="@layout/content_covid"/>
     </RelativeLayout>
 </ScrollView>
