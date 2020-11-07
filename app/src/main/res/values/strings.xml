@@ -13,4 +13,6 @@
 
     <string name="title">Final Year Major Project</string>
     <string name="upload_image">Upload Image Here</string>
+    <string name="choose_gallery">Choose photo from gallery</string>
+    <string name="take_camera">Take photo from camera</string>
 </resources>
