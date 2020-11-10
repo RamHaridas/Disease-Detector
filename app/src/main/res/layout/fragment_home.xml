@@ -9,6 +9,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/progress"
+            app:lottie_rawRes="@raw/disease_loading"
+            android:visibility="invisible"
+            app:lottie_autoPlay="true"
+            android:elevation="10dp"
+            app:lottie_loop="true"/>
+
         <TextView
             android:id="@+id/head"
             android:layout_width="wrap_content"

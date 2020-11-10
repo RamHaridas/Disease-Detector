@@ -15,4 +15,8 @@
     <string name="upload_image">Upload Image Here</string>
     <string name="choose_gallery">Choose photo from gallery</string>
     <string name="take_camera">Take photo from camera</string>
+    <string name="api_url">SERVER URL</string>
+    <string name="edit">Edit</string>
+    <string name="paste_here">Paste URL Here</string>
+    <string name="save">Save</string>
 </resources>
