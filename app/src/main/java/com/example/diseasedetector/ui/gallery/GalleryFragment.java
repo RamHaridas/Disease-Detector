@@ -1,5 +1,6 @@
 package com.example.diseasedetector.ui.gallery;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +18,14 @@ import com.example.diseasedetector.R;
 import com.example.diseasedetector.adapters.RestAdapter;
 import com.example.diseasedetector.popups.EditApiPopup;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class GalleryFragment extends Fragment {
 
     private View root;
     private TextView api_link;
     Button edit;
+    SharedPreferences sharedPreferences;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -34,9 +38,10 @@ public class GalleryFragment extends Fragment {
     private void init(){
         edit = root.findViewById(R.id.change_url);
         api_link = root.findViewById(R.id.api_link);
-        String url = null;
-        url = RestAdapter.url;
-        if(url != null || !url.isEmpty()){
+        sharedPreferences = this.getActivity().getSharedPreferences("data",MODE_PRIVATE);
+        String url = sharedPreferences.getString("url","");
+        if(!url.isEmpty()){
+            RestAdapter.setUrl(url);
             api_link.setText(url);
         }
         listeners();

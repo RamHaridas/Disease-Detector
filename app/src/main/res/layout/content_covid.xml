@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:layout_below="@id/covidAnim"/>
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/covidtxt"
             android:text=""
+            android:textColor="@color/white"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:layout_margin="5dp"/>
