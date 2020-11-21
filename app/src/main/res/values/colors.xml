@@ -10,4 +10,5 @@
 
     <color name="mainTheme">#3490dc</color>
     <color name="offBlack">#575756</color>
+    <color name="offWhite">#f5f5f5</color>
 </resources>

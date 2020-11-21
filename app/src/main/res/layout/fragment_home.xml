@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/offWhite"
     tools:context=".ui.home.HomeFragment">
 
     <RelativeLayout
@@ -26,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             android:text="@string/upload_image"/>
         <androidx.cardview.widget.CardView
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
-            app:cardBackgroundColor="@color/offBlack"
+            app:cardBackgroundColor="@color/white"
             app:cardElevation="8dp"
             app:cardCornerRadius="8dp">
 
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/addImageCard"
-            android:text="Predict"/>
+            android:text="@string/predict"/>
         <include
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
