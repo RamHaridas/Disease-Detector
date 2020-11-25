@@ -19,5 +19,6 @@
     <string name="edit">Edit</string>
     <string name="paste_here">Paste URL Here</string>
     <string name="save">Save</string>
-    <string name="predict">Predict</string>
+    <string name="predict">Predict COVID</string>
+    <string name="disease">Classify All</string>
 </resources>

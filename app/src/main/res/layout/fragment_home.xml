@@ -46,18 +46,46 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_baseline_add_a_photo_24"/>
         </androidx.cardview.widget.CardView>
-        <Button
-            android:id="@+id/predict"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/buttonset"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/addImageCard"
-            android:text="@string/predict"/>
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/predict"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:text="@string/predict"/>
+            <Button
+                android:id="@+id/predictDiseases"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="5dp"
+                android:textColor="@color/white"
+                android:layout_height="wrap_content"
+                android:text="@string/disease"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/buttonset">
         <include
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_margin="10dp"
-            android:layout_below="@id/predict"
             layout="@layout/content_covid"/>
+         <include
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             layout="@layout/classifier_card"
+             android:layout_margin="10dp"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </ScrollView>
