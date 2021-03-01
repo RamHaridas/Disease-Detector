@@ -1,13 +1,11 @@
 package com.example.diseasedetector.ui.home;
 
-import android.Manifest;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.diseasedetector.POJOS.ChartData;
 import com.example.diseasedetector.POJOS.CovidData;
 import com.example.diseasedetector.POJOS.DiseaseData;
 import com.example.diseasedetector.POJOS.RootDiseaseData;
@@ -35,28 +32,18 @@ import com.example.diseasedetector.adapters.RestAdapter;
 import com.example.diseasedetector.placeholder.DiseasePlaceHolder;
 import com.example.diseasedetector.utils.Dialog_Get_ImageFragment;
 import com.example.diseasedetector.utils.FileUtil;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.snackbar.Snackbar;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -111,6 +98,8 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
             @Override
             public void onClick(View view) {
                 //calling image dialog fragment
+                covidCard.setVisibility(View.GONE);
+                classifier.setVisibility(View.GONE);
                 dg = new Dialog_Get_ImageFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("curr",1);
@@ -249,7 +238,7 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
                     progress.setVisibility(View.INVISIBLE);
                     RootDiseaseData rd = response.body();
                     setText(rd.getHigestValue(),highDisease);
-                    setPieChart(rd.getPredictions());
+                    setPieChart(getTopDisease(rd.getPredictions()));
                 }else{
                     progress.setVisibility(View.INVISIBLE);
                 }
@@ -262,16 +251,47 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         });
     }
 
-    private void setPieChart(DiseaseData diseaseData){
+    private ChartData[] getTopDisease(DiseaseData diseaseData){
+        ChartData[] diseaseList = new ChartData[14];
+        diseaseList[0] = new ChartData("Atelectasis",(float)diseaseData.getAtelectasis());
+        diseaseList[1] = new ChartData("Atelectasis", (float)diseaseData.getCardiomegaly());
+        diseaseList[2] = new ChartData("Consolidatation", (float)diseaseData.getConsolidation());
+        diseaseList[3] = new ChartData("Edama",(float)diseaseData.getEdema());
+        diseaseList[4] = new ChartData("Effusion", (float)diseaseData.getEffusion());
+        diseaseList[5] = new ChartData("Emphysema",(float)diseaseData.getEmphysema());
+        diseaseList[6] = new ChartData("Fibrosis",(float)diseaseData.getFibrosis());
+        diseaseList[7] = new ChartData("Hernia",(float)diseaseData.getHernia());
+        diseaseList[8] = new ChartData("Infiltration",(float)diseaseData.getInfiltration());
+        diseaseList[9] = new ChartData("Mass", (float)diseaseData.getMass());
+        diseaseList[10] = new ChartData("Nodule", (float)diseaseData.getNodule());
+        diseaseList[11] = new ChartData("Plerul_Thickening", (float)diseaseData.getPleural_Thickening());
+        diseaseList[12] = new ChartData("Pneumonia", (float)diseaseData.getPneumonia());
+        diseaseList[13] = new ChartData("Pneumothorax",(float)diseaseData.getPneumothorax());
+
+        for(int i = 0;i < 14; i++){
+            for(int j = i;j < 14;j++){
+                if(diseaseList[i].getValueData() < diseaseList[j].getValueData()){
+                    ChartData temp = diseaseList[i];
+                    diseaseList[i] = diseaseList[j];
+                    diseaseList[j] = temp;
+                }
+            }
+        }
+
+        return diseaseList;
+    }
+
+    private void setPieChart(ChartData[] diseaselist){
 
         barChart.setRotationEnabled(true);
         classifier.setVisibility(View.VISIBLE);
         List<PieEntry> diseases = new ArrayList<>();
-        diseases.add(new PieEntry((float)diseaseData.getAtelectasis(),"Atelectasis"));
+/*        diseases.add(new PieEntry((float)diseaseData.getAtelectasis(),"Atelectasis"));
         diseases.add(new PieEntry((float)diseaseData.getCardiomegaly(),"Cardiomegaly"));
         diseases.add(new PieEntry((float)diseaseData.getConsolidation(),"Consolidation"));
         diseases.add(new PieEntry((float)diseaseData.getEdema(),"Edema"));
         diseases.add(new PieEntry((float)diseaseData.getEffusion(),"Effusion"));
+        diseases.add(new PieEntry((float)diseaseData.getEmphysema(),"Emphysema"));
         diseases.add(new PieEntry((float)diseaseData.getFibrosis(),"Fibrosis"));
         diseases.add(new PieEntry((float)diseaseData.getHernia(),"Hernia"));
         diseases.add(new PieEntry((float)diseaseData.getInfiltration(),"Infiltration"));
@@ -279,7 +299,10 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         diseases.add(new PieEntry((float)diseaseData.getNodule(),"Nodule"));
         diseases.add(new PieEntry((float)diseaseData.getPleural_Thickening(),"Pleural_Thickening"));
         diseases.add(new PieEntry((float)diseaseData.getPneumonia(),"Pneumonia"));
-        diseases.add(new PieEntry((float)diseaseData.getPneumothorax(),"Pneumothorax"));
+        diseases.add(new PieEntry((float)diseaseData.getPneumothorax(),"Pneumothorax"));*/
+        for(int i = 0 ;i<10 ;i++){
+            diseases.add(new PieEntry((float)diseaselist[i].getValueData(),diseaselist[i].getDiseaseName()));
+        }
 
         List<Integer> colors = new ArrayList<>();
         colors.add(Color.parseColor("#E02323"));//red
@@ -291,11 +314,11 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         colors.add(Color.parseColor("#19F2AB"));//kinda green and blue
         colors.add(Color.parseColor("#102577"));//dark blue
         colors.add(Color.parseColor("#771269"));//dark pink
-        colors.add(Color.parseColor("#A8A2A7"));//grey
         colors.add(Color.parseColor("#F1F77B"));//light yellow
+/*        colors.add(Color.parseColor("#A8A2A7"));//grey
         colors.add(Color.parseColor("#FA6D66"));//kinda red
         colors.add(Color.parseColor("#176E1C"));//dark green
-        colors.add(Color.parseColor("#53176E"));//prussian blue maybe
+        colors.add(Color.parseColor("#53176E"));//prussian blue maybe*/
 
         PieDataSet pieDataSet = new PieDataSet(diseases,"Diseases");
         pieDataSet.setColors(colors);
@@ -304,7 +327,10 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
 
 
         PieData pieData = new PieData(pieDataSet);
+        pieData.setDrawValues(false);
+
         barChart.setData(pieData);
+        barChart.setDrawEntryLabels(false);
         barChart.getDescription().setEnabled(false);
         barChart.setCenterText("Diseases");
         barChart.animateX(1500);
