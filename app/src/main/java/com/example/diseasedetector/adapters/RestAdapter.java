@@ -1,9 +1,5 @@
 package com.example.diseasedetector.adapters;
 
-
-
-
-
 import com.example.diseasedetector.BuildConfig;
 import com.example.diseasedetector.placeholder.DiseasePlaceHolder;
 
