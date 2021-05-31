@@ -32,6 +32,12 @@
         android:layout_width="match_parent"
         android:layout_below="@id/headText"
         android:layout_height="450dp"/>
+        <Button
+            android:layout_below="@id/pieChart"
+            android:id="@+id/diseaseReport"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:text="@string/save_report"/>
     </RelativeLayout>
-
 </androidx.cardview.widget.CardView>

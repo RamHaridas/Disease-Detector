@@ -30,6 +30,7 @@
             android:textColor="@color/black"
             android:layout_centerHorizontal="true"
             android:text="@string/upload_image"/>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/addImageCard"
             android:layout_below="@id/head"

@@ -2,7 +2,7 @@ package com.example.diseasedetector.POJOS;
 
 public class CovidData {
 
-    String result,accuracy;
+    String result,accuracy,url;
 
     public CovidData(){}
 
@@ -13,4 +13,6 @@ public class CovidData {
     public String getAccuracy() {
         return accuracy;
     }
+
+    public String getUrl(){return url;}
 }

@@ -10,7 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Settings</string>
     <string name="menu_slideshow">Exit</string>
-
+    <string name="permission_request_message">Storage permission allows us to save pdf.</string>
     <string name="title">Final Year Major Project</string>
     <string name="upload_image">Upload Image Here</string>
     <string name="choose_gallery">Choose photo from gallery</string>
@@ -21,4 +21,5 @@
     <string name="save">Save</string>
     <string name="predict">Predict COVID</string>
     <string name="disease">Classify All</string>
+    <string name="save_report">Save Report</string>
 </resources>

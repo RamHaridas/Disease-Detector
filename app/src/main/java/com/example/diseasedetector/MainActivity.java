@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.diseasedetector.POJOS.Check;
 import com.example.diseasedetector.adapters.RestAdapter;
 import com.example.diseasedetector.placeholder.DiseasePlaceHolder;
+import com.example.diseasedetector.popups.LogoutPopup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private SharedPreferences sharedPreferences;
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +63,13 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_gallery)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         getAllPermissions();
         init();
         checkAPI();
+        ExitFromNavigationBar(navigationView,drawer);
     }
 
     private void init(){
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -131,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
+    }
+    public void ExitFromNavigationBar(NavigationView navigationView,DrawerLayout drawerLayout){
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if(id == R.id.nav_slideshow){
+                LogoutPopup lg = new LogoutPopup();
+                lg.show(getSupportFragmentManager(),"logout");
+            }
+            //This is for maintaining the behavior of the Navigation view
+            NavigationUI.onNavDestinationSelected(item,navController);
+            //This is for closing the drawer after acting on it
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
+        });
     }
 
 }

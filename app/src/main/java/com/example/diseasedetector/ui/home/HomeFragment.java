@@ -1,6 +1,7 @@
 package com.example.diseasedetector.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -44,6 +45,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TooManyListenersException;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -59,12 +62,13 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
     private Dialog_Get_ImageFragment dg;
     private Uri general,imageuri;
     private Bitmap imagebitmap;
-    private Button predict,classify;
+    private Button predict,classify,covidReport,diseaseReport;
     private CardView covidCard, classifier;
     private TextView covidResult,covidAcc,highDisease;
     private ViewGroup container;
     private PieChart barChart;
     private ProgressBar progressBar;
+    private String covidUrl,allUrl;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -75,6 +79,9 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
     }
 
     private void init(){
+
+        diseaseReport = root.findViewById(R.id.diseaseReport);
+        covidReport = root.findViewById(R.id.covidReport);
         classify = root.findViewById(R.id.predictDiseases);
         highDisease = root.findViewById(R.id.headText);
         progressBar = root.findViewById(R.id.classProgress);
@@ -94,6 +101,29 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
     }
 
     private void allListeners(){
+
+        diseaseReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getAllUrl().isEmpty()){
+                    Toast.makeText(view.getContext(), "Not found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(getAllUrl())));
+            }
+        });
+
+        covidReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getCovidUrl().isEmpty()){
+                    Toast.makeText(view.getContext(), "Not found", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                getActivity().startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(getCovidUrl())));
+            }
+        });
+
         xray.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +209,7 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
                 if(response.isSuccessful()){
                     progress.setVisibility(View.INVISIBLE);
                     CovidData cd = response.body();
+                    setCovidUrl(cd.getUrl() != null ? cd.getUrl() : "");
                     covid.setVisibility(View.VISIBLE);
                     covidCard.setVisibility(View.VISIBLE);
                     YoYo.with(Techniques.FadeInUp)
@@ -237,6 +268,7 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
                 if(response.isSuccessful()){
                     progress.setVisibility(View.INVISIBLE);
                     RootDiseaseData rd = response.body();
+                    setAllUrl(rd.getUrl() != null ? rd.getUrl() : "");
                     setText(rd.getHigestValue(),highDisease);
                     setPieChart(getTopDisease(rd.getPredictions()));
                 }else{
@@ -300,7 +332,7 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         diseases.add(new PieEntry((float)diseaseData.getPleural_Thickening(),"Pleural_Thickening"));
         diseases.add(new PieEntry((float)diseaseData.getPneumonia(),"Pneumonia"));
         diseases.add(new PieEntry((float)diseaseData.getPneumothorax(),"Pneumothorax"));*/
-        for(int i = 0 ;i<10 ;i++){
+        for(int i = 0 ;i<14 ;i++){
             diseases.add(new PieEntry((float)diseaselist[i].getValueData(),diseaselist[i].getDiseaseName()));
         }
 
@@ -315,10 +347,10 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         colors.add(Color.parseColor("#102577"));//dark blue
         colors.add(Color.parseColor("#771269"));//dark pink
         colors.add(Color.parseColor("#F1F77B"));//light yellow
-/*        colors.add(Color.parseColor("#A8A2A7"));//grey
+        colors.add(Color.parseColor("#A8A2A7"));//grey
         colors.add(Color.parseColor("#FA6D66"));//kinda red
         colors.add(Color.parseColor("#176E1C"));//dark green
-        colors.add(Color.parseColor("#53176E"));//prussian blue maybe*/
+        colors.add(Color.parseColor("#53176E"));//prussian blue maybe
 
         PieDataSet pieDataSet = new PieDataSet(diseases,"Diseases");
         pieDataSet.setColors(colors);
@@ -358,5 +390,21 @@ public class HomeFragment extends Fragment implements Dialog_Get_ImageFragment.M
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public String getCovidUrl() {
+        return covidUrl;
+    }
+
+    public void setCovidUrl(String covidUrl) {
+        this.covidUrl = covidUrl;
+    }
+
+    public String getAllUrl() {
+        return allUrl;
+    }
+
+    public void setAllUrl(String allUrl) {
+        this.allUrl = allUrl;
     }
 }

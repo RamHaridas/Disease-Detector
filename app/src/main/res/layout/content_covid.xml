@@ -39,5 +39,12 @@
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
             android:layout_margin="5dp"/>
+        <Button
+            android:id="@+id/covidReport"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/covidAcc"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:text="@string/save_report"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
